@@ -13,17 +13,15 @@
 static char syscall_breakpoint_assembly[] = "\x0f\x05\xcc"; // syscall 0f 05 and breakpoint cc (INT3)
 
 void read_bytes(pid_t process, const uint32_t* address, uint32_t* bytes, int length) {
-	int i;
 	int j = ((length + sizeof(uint32_t) -1) / sizeof(uint32_t));
-	for (i = 0; i < j; i++) {
+	for (int i = 0; i < j; i++) {
 		*bytes++ = ptrace(PTRACE_PEEKDATA, process, address++, NULL);
 	}
 }
 
 void set_bytes(pid_t process, const uint32_t* address, const uint32_t* bytes, int length) {
-	int i;
 	int j = ((length + sizeof(uint32_t) -1) / sizeof(uint32_t));
-	for (i = 0; i < j; i++) {
+	for (int i = 0; i < j; i++) {
 		ptrace(PTRACE_POKEDATA, process, address++, *bytes++);
 	}
 }
